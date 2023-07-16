@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask
 import requests
 import json
 
@@ -21,7 +21,6 @@ def get_By_Id(id):
   if (not filtered_Data):
     return json.dumps({"response": f"no object find with the id {id}"})
   return json.dumps(filtered_Data)
-
 
 @app.route('/ndjson')
 def ndjson():
