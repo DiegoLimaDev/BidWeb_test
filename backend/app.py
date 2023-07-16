@@ -21,3 +21,19 @@ def get_By_Id(id):
   if (not filtered_Data):
     return json.dumps({"response": f"no object find with the id {id}"})
   return json.dumps(filtered_Data)
+
+
+@app.route('/ndjson')
+def ndjson():
+  ndjson_list = []
+  for i in data:
+    ndjson_list.append({
+      "ID": str(i['ID']),
+      "name": i['name'],
+      "severity": i['severity'],
+      "description": i['description']
+    })
+  result = [json.dumps(record) for record in ndjson_list]
+  f = open('data.ndjson', "w")
+  f.write('\n'.join(result))
+  return ('\n'.join(result))
