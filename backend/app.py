@@ -37,3 +37,20 @@ def ndjson():
   f = open('data.ndjson', "w")
   f.write('\n'.join(result))
   return ('\n'.join(result))
+
+@app.route('/ndjson/<page>')
+def ndjson_by_page(page):
+  page_number = int(page)
+  filtered_Data = list(filter(lambda x: (page_number - 1) * 50 < x['ID'] <= (page_number * 50), data))
+  ndjson_list = []
+  for i in filtered_Data:
+    ndjson_list.append({
+      "ID": str(i['ID']),
+      "name": i['name'],
+      "severity": i['severity'],
+      "description": i['description']
+    })
+  result = [json.dumps(record) for record in ndjson_list]
+  if (not filtered_Data):
+    return json.dumps({"response": f"there's no data for the page {page}"})
+  return ('\n'.join(result))
