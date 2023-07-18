@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { fetchIPS } from '../../application/IntrusionPreventionRules/IPS.slice';
 import { Box, Pagination } from '@mui/material';
 import { CardsGridDisplay } from '../components/CardsGridDisplay/CardsGridDisplay';
+import { Text } from '../common/Text';
+import { theme } from '../../../styles/theme';
 
 export const Home = () => {
   const { page } = useParams();
@@ -19,18 +21,34 @@ export const Home = () => {
   }, [page]);
 
   return (
-    <div>
-      <CardsGridDisplay ipsData={ipsData} />
-      <Box display={'block'} margin={'2rem auto'} width={'fit-content'}>
-        <Pagination
-          variant="outlined"
-          color="secondary"
-          count={ipsData.length * 2}
-          onChange={handleChange}
-          style={{ height: '4rem', fontSize: '100%' }}
-          size="large"
-        />
-      </Box>
+    <div style={{ minHeight: '80vh' }}>
+      {ipsData.length !== 0 && (
+        <>
+          <CardsGridDisplay ipsData={ipsData} />
+          <Box display={'block'} margin={'2rem auto'} width={'fit-content'}>
+            <Pagination
+              variant="outlined"
+              color="secondary"
+              count={ipsData.length * 2}
+              onChange={handleChange}
+              style={{ height: '4rem', fontSize: '100%' }}
+              size="large"
+            />
+          </Box>
+        </>
+      )}
+      {ipsData.length === 0 && (
+        <>
+          <Text
+            fontSize={theme.sizes.big}
+            textAlign={'center'}
+            marginTop={'5rem'}
+          >
+            Não há dados para serem exibidos. Certifique-se de que o servidor
+            flask está ativo
+          </Text>
+        </>
+      )}
     </div>
   );
 };
